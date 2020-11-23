@@ -24,7 +24,9 @@ export type Rank<T extends TypeNames<typeof Rank> = undefined> = VariantOf<
   T
 >;
 
-export const Suit = variantList(['Clubs', 'Diamonds', 'Hearts', 'Spades']);
+const validSuits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
+
+export const Suit = variantList(validSuits);
 
 export type Suit<T extends TypeNames<typeof Suit> = undefined> = VariantOf<
   typeof Suit,
