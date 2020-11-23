@@ -1,14 +1,7 @@
 import { none, Option, some } from 'fp-ts/lib/Option';
-import {
-  isOfVariant,
-  lookup,
-  match,
-  TypeNames,
-  variantList,
-  VariantOf,
-} from 'variant';
+import { lookup, match, TypeNames, variantList, VariantOf } from 'variant';
 
-const Rank = variantList([
+const validRanks = [
   '2',
   '3',
   '4',
@@ -22,21 +15,23 @@ const Rank = variantList([
   'Q',
   'K',
   'A',
-]);
+];
 
-type Rank<T extends TypeNames<typeof Rank> = undefined> = VariantOf<
+export const Rank = variantList(validRanks);
+
+export type Rank<T extends TypeNames<typeof Rank> = undefined> = VariantOf<
   typeof Rank,
   T
 >;
 
-const Suit = variantList(['Clubs', 'Diamonds', 'Hearts', 'Spades']);
+export const Suit = variantList(['Clubs', 'Diamonds', 'Hearts', 'Spades']);
 
-type Suit<T extends TypeNames<typeof Suit> = undefined> = VariantOf<
+export type Suit<T extends TypeNames<typeof Suit> = undefined> = VariantOf<
   typeof Suit,
   T
 >;
 
-interface Card {
+export interface Card {
   rank: Rank;
   suit: Suit;
 }
@@ -49,7 +44,10 @@ export const parseCard = (str: string): Option<Card> => {
   const possibleRank = str[0];
   const possibleSuit = str[1];
 
-  if (!isOfVariant(possibleRank, Rank)) {
+  let rank: Rank;
+  if (validRanks.includes(possibleRank)) {
+    rank = Rank[possibleRank];
+  } else {
     return none;
   }
 
@@ -72,7 +70,7 @@ export const parseCard = (str: string): Option<Card> => {
   }
 
   return some({
-    rank: possibleRank,
+    rank,
     suit,
   });
 };
