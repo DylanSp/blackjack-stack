@@ -86,7 +86,7 @@ export const cardToString = (card: Card): string => {
   return card.rank.type + suitChar;
 };
 
-type Hand = Array<Card>;
+export type Hand = Array<Card>;
 
 export const valueOfHand = (hand: Hand): number => {
   let value = 0;
